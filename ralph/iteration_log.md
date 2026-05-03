@@ -66,3 +66,12 @@
   - `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration`
   - `.venv/bin/ruff check .`
   - `.venv/bin/mypy`
+
+## M6 Temporary Checkpoint
+
+- Implemented the Next.js Prompt Studio UI.
+- Verified typecheck, lint, production build, and backend checks.
+- Playwright smoke test is blocked because Chromium cannot launch without
+  `libglib-2.0.so.0`.
+- Runtime package installation is not available in the current container, so
+  this state is tagged as `M6-temp` rather than `M6`.

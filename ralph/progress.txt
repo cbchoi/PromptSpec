@@ -65,10 +65,10 @@ Completed:
 - M5.T9 Add one local-manual smoke test script
 
 In Progress:
-- None
+- M6 Web UI Prompt Studio
 
 Blocked:
-- None
+- M6 Playwright smoke test blocked by missing Chromium system dependency libglib-2.0.so.0 in container
 
 Last Failure:
 - None

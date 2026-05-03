@@ -1,0 +1,392 @@
+:root {
+  --ink: #17211b;
+  --muted: #607068;
+  --line: #c9d4ce;
+  --paper: #f7f8f4;
+  --panel: #ffffff;
+  --green: #2f7d55;
+  --blue: #2d5f93;
+  --red: #b64242;
+  --gold: #9b6a20;
+  --violet: #725aa8;
+  --cyan: #287d86;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.studio-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line);
+  background: #eef3ee;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.topbar p {
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar button,
+.delete-button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.toolbar button:hover,
+.delete-button:hover {
+  border-color: var(--blue);
+}
+
+.status-pill {
+  min-width: 72px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.9fr) minmax(260px, 1.2fr) minmax(300px, 1.4fr) minmax(240px, 1fr);
+  gap: 1px;
+  background: var(--line);
+  flex: 1;
+}
+
+.panel,
+.import-area,
+.settings-area {
+  background: var(--panel);
+  min-width: 0;
+}
+
+.panel {
+  padding: 16px;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.panel-heading h2 {
+  font-size: 15px;
+}
+
+.compact {
+  margin-bottom: 8px;
+}
+
+.slot-table {
+  display: grid;
+  gap: 6px;
+}
+
+.slot-row {
+  height: 42px;
+  border: 1px solid var(--line);
+  background: #fbfcfa;
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.slot-row.active {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.role,
+.task,
+.constraint,
+.forbidden,
+.output_format,
+.evidence_rule,
+.strategy,
+.context {
+  border-color: transparent;
+}
+
+.role {
+  background-color: rgba(47, 125, 85, 0.18);
+}
+
+.task {
+  background-color: rgba(45, 95, 147, 0.18);
+}
+
+.constraint {
+  background-color: rgba(155, 106, 32, 0.2);
+}
+
+.forbidden {
+  background-color: rgba(182, 66, 66, 0.18);
+}
+
+.output_format {
+  background-color: rgba(114, 90, 168, 0.18);
+}
+
+.evidence_rule {
+  background-color: rgba(40, 125, 134, 0.18);
+}
+
+.strategy {
+  background-color: rgba(40, 80, 60, 0.16);
+}
+
+.context {
+  background-color: rgba(96, 112, 104, 0.16);
+}
+
+.editor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: #fbfcfa;
+  color: var(--ink);
+  padding: 9px 10px;
+  outline: none;
+}
+
+textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--blue);
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.check-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.check-line input {
+  width: 16px;
+}
+
+.delete-button {
+  justify-self: end;
+}
+
+.rendered-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.span {
+  display: block;
+  padding: 8px 10px;
+  color: var(--ink);
+}
+
+.span.active {
+  outline: 2px solid var(--blue);
+}
+
+.validation-list {
+  display: grid;
+  gap: 12px;
+}
+
+.result {
+  width: max-content;
+  padding: 6px 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.result.pass {
+  background: rgba(47, 125, 85, 0.16);
+  color: var(--green);
+}
+
+.result.fail {
+  background: rgba(182, 66, 66, 0.16);
+  color: var(--red);
+}
+
+dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+dl div {
+  border: 1px solid var(--line);
+  padding: 8px;
+}
+
+dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+dd {
+  margin: 4px 0 0;
+  font-weight: 700;
+}
+
+.issue {
+  display: grid;
+  gap: 4px;
+  border-left: 3px solid var(--red);
+  padding-left: 10px;
+}
+
+.empty-state {
+  color: var(--muted);
+}
+
+.bottom-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border-top: 1px solid var(--line);
+}
+
+.import-area,
+.settings-area {
+  padding: 16px 24px;
+}
+
+.settings-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-content: start;
+}
+
+.settings-area .panel-heading {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1100px) {
+  .workspace {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar,
+  .bottom-band {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .workspace,
+  .bottom-band {
+    display: block;
+  }
+
+  .panel,
+  .import-area,
+  .settings-area {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .editor-grid,
+  .settings-area {
+    grid-template-columns: 1fr;
+  }
+}
+

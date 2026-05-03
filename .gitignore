@@ -12,6 +12,8 @@ build/
 # Node
 node_modules/
 .next/
+.pnpm-store/
+*.tsbuildinfo
 coverage/
 playwright-report/
 test-results/
@@ -25,4 +27,3 @@ test-results/
 .DS_Store
 .idea/
 .vscode/
-
