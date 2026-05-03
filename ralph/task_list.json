@@ -346,6 +346,136 @@
       "acceptance_criteria": ["Scenario test resolves, renders, and validates a PromptSpec end to end"],
       "test_commands": [".venv/bin/python -m pytest tests/scenario/test_engine_scenario.py"],
       "dependencies": ["M2.T16"]
+    },
+    {
+      "id": "M3.T1",
+      "title": "Define prompt test case schema",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.1", "F6.4"],
+      "acceptance_criteria": ["PromptTestCase schema validates prompt fixtures"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_loader.py"],
+      "dependencies": ["M2.T17"]
+    },
+    {
+      "id": "M3.T2",
+      "title": "Add fixture directory layout",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.1"],
+      "acceptance_criteria": ["Scenario fixture directory contains a runnable prompt test case"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_loader.py"],
+      "dependencies": ["M3.T1"]
+    },
+    {
+      "id": "M3.T3",
+      "title": "Implement test case loader",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.1"],
+      "acceptance_criteria": ["JSON and YAML fixture files can be loaded as PromptTestCase objects"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_loader.py"],
+      "dependencies": ["M3.T1"]
+    },
+    {
+      "id": "M3.T4",
+      "title": "Implement unit suite runner",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.2"],
+      "acceptance_criteria": ["HarnessRunner supports suite execution by suite name"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_runner.py"],
+      "dependencies": ["M3.T3"]
+    },
+    {
+      "id": "M3.T5",
+      "title": "Implement integration suite runner",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.2"],
+      "acceptance_criteria": ["HarnessRunner supports integration suite names"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_runner.py"],
+      "dependencies": ["M3.T4"]
+    },
+    {
+      "id": "M3.T6",
+      "title": "Implement scenario suite runner",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.2"],
+      "acceptance_criteria": ["HarnessRunner runs scenario fixtures end to end"],
+      "test_commands": [".venv/bin/python harness.py run --suite scenario --reports-dir /tmp/promptspec-reports"],
+      "dependencies": ["M3.T4"]
+    },
+    {
+      "id": "M3.T7",
+      "title": "Implement regression suite runner",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.2"],
+      "acceptance_criteria": ["HarnessRunner supports regression suite names"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_runner.py"],
+      "dependencies": ["M3.T4"]
+    },
+    {
+      "id": "M3.T8",
+      "title": "Implement expected-vs-actual meaning comparator",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.3"],
+      "acceptance_criteria": ["Meaning comparator reports missing and mismatched keys"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_comparator.py"],
+      "dependencies": ["M3.T1"]
+    },
+    {
+      "id": "M3.T9",
+      "title": "Implement TestReport writer",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.4"],
+      "acceptance_criteria": ["Harness writes TestReport JSON artifacts"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_runner.py"],
+      "dependencies": ["M3.T4"]
+    },
+    {
+      "id": "M3.T10",
+      "title": "Add python harness.py run CLI",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.2", "F6.4"],
+      "acceptance_criteria": ["CLI can run a suite and print TestReport JSON"],
+      "test_commands": [".venv/bin/python harness.py run --suite scenario --reports-dir /tmp/promptspec-reports"],
+      "dependencies": ["M3.T9"]
+    },
+    {
+      "id": "M3.T11",
+      "title": "Add python harness.py report CLI",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.4"],
+      "acceptance_criteria": ["CLI can load and print a stored TestReport"],
+      "test_commands": [".venv/bin/python harness.py report scenario_suite --reports-dir /tmp/promptspec-reports"],
+      "dependencies": ["M3.T10"]
+    },
+    {
+      "id": "M3.T12",
+      "title": "Add failing-test report behavior",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.4"],
+      "acceptance_criteria": ["Failed cases produce report artifacts"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_harness_runner.py"],
+      "dependencies": ["M3.T9"]
+    },
+    {
+      "id": "M3.T13",
+      "title": "Add harness tests with pass and fail fixtures",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F6.1", "F6.2", "F6.3", "F6.4"],
+      "acceptance_criteria": ["Harness unit tests cover pass and failure-report behavior"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit tests/scenario"],
+      "dependencies": ["M3.T12"]
     }
   ]
 }

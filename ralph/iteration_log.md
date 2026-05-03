@@ -23,3 +23,17 @@
   - `.venv/bin/python -m pytest tests/unit tests/scenario`
   - `.venv/bin/ruff check .`
   - `.venv/bin/mypy`
+
+## M3 Test Harness
+
+- Implemented PromptTestCase schema and fixture loading.
+- Implemented meaning comparison.
+- Implemented HarnessRunner for suite and case execution.
+- Implemented TestReport writing and loading.
+- Added `harness.py run` and `harness.py report` CLI commands.
+- Added pass and failure-report tests.
+- Verification passed:
+  - `.venv/bin/python -m pytest tests/unit tests/scenario`
+  - `.venv/bin/python harness.py run --suite scenario --reports-dir /tmp/promptspec-reports`
+  - `.venv/bin/ruff check .`
+  - `.venv/bin/mypy`

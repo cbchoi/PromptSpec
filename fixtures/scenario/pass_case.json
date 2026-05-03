@@ -1,0 +1,44 @@
+{
+  "id": "scenario_pass_case",
+  "suite": "scenario",
+  "prompt_spec": {
+    "id": "spec_001",
+    "title": "Scenario prompt",
+    "parent_id": null,
+    "slots": [
+      {
+        "key": "audience",
+        "type": "role",
+        "value": "Write for engineers.",
+        "condition": null,
+        "priority": 100,
+        "source": "user",
+        "version": 1,
+        "required": true
+      },
+      {
+        "key": "task",
+        "type": "task",
+        "value": "Summarize the design.",
+        "condition": null,
+        "priority": 100,
+        "source": "user",
+        "version": 1,
+        "required": true
+      }
+    ],
+    "strategy": {
+      "render_strategy": "plain",
+      "validation_strategy": "strict",
+      "inspection_strategy": "schema_bound"
+    },
+    "metadata": {}
+  },
+  "parents": {},
+  "expected_status": "pass",
+  "expected_text": "Write for engineers.\nSummarize the design.",
+  "expected_meaning": {
+    "task": "Summarize the design."
+  }
+}
+

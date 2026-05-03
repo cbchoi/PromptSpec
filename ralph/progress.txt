@@ -26,6 +26,19 @@ Completed:
 - M2.T15 Implement rendered-vs-source fidelity validator
 - M2.T16 Add resolver, renderer, and validator unit tests
 - M2.T17 Add one end-to-end engine scenario fixture
+- M3.T1 Define prompt test case schema
+- M3.T2 Add fixture directory layout
+- M3.T3 Implement test case loader
+- M3.T4 Implement unit suite runner
+- M3.T5 Implement integration suite runner
+- M3.T6 Implement scenario suite runner
+- M3.T7 Implement regression suite runner
+- M3.T8 Implement expected-vs-actual meaning comparator
+- M3.T9 Implement TestReport writer
+- M3.T10 Add python harness.py run CLI
+- M3.T11 Add python harness.py report CLI
+- M3.T12 Add failing-test report behavior
+- M3.T13 Add harness tests with pass and fail fixtures
 
 In Progress:
 - None
