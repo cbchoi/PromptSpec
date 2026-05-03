@@ -626,6 +626,96 @@
       "acceptance_criteria": ["httpx integration tests cover prompt, settings, tests, and Ralph endpoints"],
       "test_commands": [".venv/bin/python -m pytest tests/integration"],
       "dependencies": ["M4.T14"]
+    },
+    {
+      "id": "M5.T1",
+      "title": "Add configurable Ollama-compatible client",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F4.1", "F8.3"],
+      "acceptance_criteria": ["OllamaClient posts to /api/generate with configurable endpoint and model"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M4.T15"]
+    },
+    {
+      "id": "M5.T2",
+      "title": "Define schema-bound inspection prompt",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F4.2"],
+      "acceptance_criteria": ["Inspection prompt requires JSON-only meaning and uncertainties output"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M5.T1"]
+    },
+    {
+      "id": "M5.T3",
+      "title": "Implement local LLM request/response handling",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F4.1"],
+      "acceptance_criteria": ["OllamaClient reads string response from generate payload"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M5.T1"]
+    },
+    {
+      "id": "M5.T4",
+      "title": "Implement JSON extraction and validation",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F4.2", "F7.2"],
+      "acceptance_criteria": ["Raw model output is parsed as a top-level JSON object"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M5.T2"]
+    },
+    {
+      "id": "M5.T5",
+      "title": "Map valid output into MeaningReport",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F4.2", "F4.3", "F5.5"],
+      "acceptance_criteria": ["Valid model JSON maps into MeaningReport meaning and uncertainties"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M5.T4"]
+    },
+    {
+      "id": "M5.T6",
+      "title": "Map invalid/free-form output into schema failure",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F4.2"],
+      "acceptance_criteria": ["Invalid model output creates MeaningReport with SCHEMA_VIOLATION uncertainty"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M5.T4"]
+    },
+    {
+      "id": "M5.T7",
+      "title": "Store raw model output in trace logs",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F7.3"],
+      "acceptance_criteria": ["LocalLLMInspector writes trace JSON with prompt, raw model output, and MeaningReport"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M5.T5"]
+    },
+    {
+      "id": "M5.T8",
+      "title": "Add mocked LLM tests",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F4.1", "F4.2"],
+      "acceptance_criteria": ["Unit tests cover mocked Ollama and fake inspector clients"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M5.T7"]
+    },
+    {
+      "id": "M5.T9",
+      "title": "Add one local-manual smoke test script",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F4.1"],
+      "acceptance_criteria": ["Manual smoke script can call LocalLLMInspector against local Ollama"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
+      "dependencies": ["M5.T8"]
     }
   ]
 }

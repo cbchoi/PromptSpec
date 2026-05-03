@@ -54,6 +54,15 @@ Completed:
 - M4.T13 Implement /api/ralph/check
 - M4.T14 Add shared error response handling
 - M4.T15 Add API integration tests with httpx
+- M5.T1 Add configurable Ollama-compatible client
+- M5.T2 Define schema-bound inspection prompt
+- M5.T3 Implement local LLM request/response handling
+- M5.T4 Implement JSON extraction and validation
+- M5.T5 Map valid output into MeaningReport
+- M5.T6 Map invalid/free-form output into schema failure
+- M5.T7 Store raw model output in trace logs
+- M5.T8 Add mocked LLM tests
+- M5.T9 Add one local-manual smoke test script
 
 In Progress:
 - None

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 from fastapi import FastAPI
 from promptspec_engine import render_prompt, resolve_prompt_spec, validate_prompt
@@ -44,9 +44,24 @@ class RalphCheckRequest(BaseModel):
     task_id: str
 
 
+class Inspector(Protocol):
+    def inspect(self, rendered_prompt: RenderedPrompt) -> MeaningReport: ...
+
+
+class EchoInspector:
+    def inspect(self, rendered_prompt: RenderedPrompt) -> MeaningReport:
+        return MeaningReport(
+            spec_id=rendered_prompt.spec_id,
+            meaning={"text": rendered_prompt.text},
+            uncertainties=[],
+            raw_model=None,
+        )
+
+
 def create_app(
     settings_repo: SettingsRepository | None = None,
     harness_runner: HarnessRunner | None = None,
+    inspector: Inspector | None = None,
     root: Path = Path("."),
 ) -> FastAPI:
     app = FastAPI(title="PromptSpec API")
@@ -54,6 +69,7 @@ def create_app(
 
     repo = settings_repo or SettingsRepository()
     runner = harness_runner or HarnessRunner(root / "fixtures", root / "reports/tests")
+    prompt_inspector = inspector or EchoInspector()
 
     @app.post("/api/prompts/resolve", response_model=PromptSpec)
     def resolve_endpoint(prompt_spec: PromptSpec) -> PromptSpec:
@@ -65,12 +81,7 @@ def create_app(
 
     @app.post("/api/prompts/inspect", response_model=MeaningReport)
     def inspect_endpoint(rendered_prompt: RenderedPrompt) -> MeaningReport:
-        return MeaningReport(
-            spec_id=rendered_prompt.spec_id,
-            meaning={"text": rendered_prompt.text},
-            uncertainties=[],
-            raw_model=None,
-        )
+        return prompt_inspector.inspect(rendered_prompt)
 
     @app.post("/api/prompts/validate", response_model=ValidationReport)
     def validate_endpoint(payload: ValidateRequest) -> ValidationReport:
@@ -157,4 +168,3 @@ def _parse_progress(progress_text: str) -> dict[str, list[str] | str | None]:
 
 
 app = create_app()
-

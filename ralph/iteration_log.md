@@ -52,3 +52,17 @@
   - `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration`
   - `.venv/bin/ruff check .`
   - `.venv/bin/mypy`
+
+## M5 Local LLM Meaning Inspector
+
+- Implemented Ollama-compatible local LLM client.
+- Implemented schema-bound inspection prompt.
+- Implemented raw model JSON extraction and validation.
+- Mapped valid output into MeaningReport.
+- Mapped invalid/free-form output into SCHEMA_VIOLATION uncertainty.
+- Added trace logging with prompt, rendered prompt, raw model output, and MeaningReport.
+- Added mocked LLM tests and manual smoke script.
+- Verification passed:
+  - `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration`
+  - `.venv/bin/ruff check .`
+  - `.venv/bin/mypy`
