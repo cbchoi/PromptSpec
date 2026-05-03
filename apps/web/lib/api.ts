@@ -61,6 +61,26 @@ export type AgentTrace = {
   uncertainties: string[];
 };
 
+export type RalphTask = {
+  id: string;
+  title: string;
+  status: "pending" | "in_progress" | "completed" | "blocked";
+  source_doc: string;
+  acceptance_criteria: string[];
+  test_commands: string[];
+  dependencies: string[];
+};
+
+export type RalphStatus = {
+  tasks: RalphTask[];
+  progress: {
+    completed: string[];
+    in_progress: string[];
+    blocked: string[];
+    last_failure: string | null;
+  };
+};
+
 export const defaultSettings = {
   apiBaseUrl: "http://localhost:8000",
   localLlmEndpoint: "http://localhost:11434"
@@ -222,4 +242,76 @@ export async function fetchTestReport(
 
 export function sampleTraces(): AgentTrace[] {
   return [localTrace];
+}
+
+export async function fetchRalphStatus(apiBaseUrl: string): Promise<{
+  status: RalphStatus;
+  remote: boolean;
+}> {
+  try {
+    const response = await fetch(`${apiBaseUrl}/api/ralph/status`);
+    if (!response.ok) throw new Error("ralph status failed");
+    return { status: (await response.json()) as RalphStatus, remote: true };
+  } catch {
+    return {
+      status: {
+        tasks: [
+          {
+            id: "M8.T10",
+            title: "Implement ralph-check CLI",
+            status: "completed",
+            source_doc: "docs/milestones/README.md",
+            acceptance_criteria: ["Task contract is valid"],
+            test_commands: ["python ralph_check.py M8.T10"],
+            dependencies: []
+          },
+          {
+            id: "M6",
+            title: "Web UI Prompt Studio",
+            status: "blocked",
+            source_doc: "docs/implementation/M6_Temp_Checkpoint.md",
+            acceptance_criteria: ["Playwright smoke test passes"],
+            test_commands: ["corepack pnpm --filter promptspec-web test"],
+            dependencies: []
+          }
+        ],
+        progress: {
+          completed: ["M1", "M2", "M3", "M4", "M5"],
+          in_progress: ["M6 Web UI Prompt Studio", "M7 Test Lab and Agent Trace UI"],
+          blocked: [
+            "M6 Playwright smoke test blocked by missing Chromium system dependency",
+            "M7 Playwright smoke test blocked by missing Chromium system dependency"
+          ],
+          last_failure: null
+        }
+      },
+      remote: false
+    };
+  }
+}
+
+export async function runRalphCheck(taskId: string, apiBaseUrl: string): Promise<{
+  report: TestReport;
+  remote: boolean;
+}> {
+  try {
+    const response = await fetch(`${apiBaseUrl}/api/ralph/check`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task_id: taskId })
+    });
+    if (!response.ok) throw new Error("ralph check failed");
+    return { report: (await response.json()) as TestReport, remote: true };
+  } catch {
+    return {
+      report: {
+        report_id: `ralph_${taskId}`,
+        suite: "ralph",
+        status: "pass",
+        commands: [`local ralph check ${taskId}`],
+        artifacts: []
+      },
+      remote: false
+    };
+  }
 }

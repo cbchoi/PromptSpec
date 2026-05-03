@@ -19,12 +19,15 @@ import { ChangeEvent, useMemo, useState } from "react";
 import {
   AgentTrace,
   PromptSlot,
+  RalphStatus,
   TestReport,
   ValidationReport,
   defaultSettings,
+  fetchRalphStatus,
   fetchTestReport,
   renderLocal,
   resolveRenderValidate,
+  runRalphCheck,
   runTestSuite,
   sampleTraces,
   slotTypes,
@@ -55,7 +58,7 @@ const initialSlots: PromptSlot[] = [
 ];
 
 export default function PromptStudioPage() {
-  const [activeView, setActiveView] = useState<"studio" | "tests" | "traces">("studio");
+  const [activeView, setActiveView] = useState<"studio" | "tests" | "traces" | "ralph">("studio");
   const [slots, setSlots] = useState<PromptSlot[]>(initialSlots);
   const [selectedKey, setSelectedKey] = useState("audience");
   const [renderedText, setRenderedText] = useState("");
@@ -68,6 +71,9 @@ export default function PromptStudioPage() {
   const [selectedReport, setSelectedReport] = useState<TestReport | null>(null);
   const [traces] = useState<AgentTrace[]>(sampleTraces());
   const [selectedTraceId, setSelectedTraceId] = useState("trace_local_001");
+  const [ralphStatus, setRalphStatus] = useState<RalphStatus | null>(null);
+  const [selectedRalphTaskId, setSelectedRalphTaskId] = useState("M8.T10");
+  const [ralphReport, setRalphReport] = useState<TestReport | null>(null);
 
   const rendered = useMemo(() => renderLocal(slots), [slots]);
   const selectedSlot = slots.find((slot) => slot.key === selectedKey) ?? slots[0];
@@ -127,6 +133,21 @@ export default function PromptStudioPage() {
     setStatus(result.remote ? "API" : "Local");
   }
 
+  async function loadRalphStatus() {
+    setStatus("Ralph");
+    const result = await fetchRalphStatus(settings.apiBaseUrl);
+    setRalphStatus(result.status);
+    setSelectedRalphTaskId(result.status.tasks[0]?.id ?? "");
+    setStatus(result.remote ? "API" : "Local");
+  }
+
+  async function checkRalphTask(taskId: string) {
+    setSelectedRalphTaskId(taskId);
+    const result = await runRalphCheck(taskId, settings.apiBaseUrl);
+    setRalphReport(result.report);
+    setStatus(result.remote ? "API" : "Local");
+  }
+
   function exportJson() {
     const data = JSON.stringify(slots, null, 2);
     navigator.clipboard?.writeText(data).catch(() => undefined);
@@ -180,6 +201,17 @@ export default function PromptStudioPage() {
             <Workflow size={16} />
             Trace
           </button>
+          <button
+            className={activeView === "ralph" ? "tab active" : "tab"}
+            type="button"
+            onClick={() => {
+              setActiveView("ralph");
+              void loadRalphStatus();
+            }}
+          >
+            <GitBranch size={16} />
+            Ralph
+          </button>
         </nav>
         <div className="toolbar">
           <button type="button" onClick={addSlot} title="Add slot" aria-label="Add slot">
@@ -230,7 +262,115 @@ export default function PromptStudioPage() {
           traces={traces}
         />
       ) : null}
+
+      {activeView === "ralph" ? (
+        <RalphDashboardView
+          checkRalphTask={checkRalphTask}
+          ralphReport={ralphReport}
+          ralphStatus={ralphStatus}
+          selectedTaskId={selectedRalphTaskId}
+        />
+      ) : null}
     </main>
+  );
+}
+
+function RalphDashboardView({
+  checkRalphTask,
+  ralphReport,
+  ralphStatus,
+  selectedTaskId
+}: {
+  checkRalphTask: (taskId: string) => void;
+  ralphReport: TestReport | null;
+  ralphStatus: RalphStatus | null;
+  selectedTaskId: string;
+}) {
+  const tasks = ralphStatus?.tasks ?? [];
+  const selectedTask = tasks.find((task) => task.id === selectedTaskId) ?? tasks[0];
+
+  return (
+    <section className="ralph-layout">
+      <section className="panel" aria-label="Ralph progress">
+        <div className="panel-heading">
+          <h2>Progress</h2>
+          <GitBranch size={18} />
+        </div>
+        {ralphStatus ? (
+          <div className="progress-grid">
+            <ProgressBlock title="Completed" values={ralphStatus.progress.completed} />
+            <ProgressBlock title="In Progress" values={ralphStatus.progress.in_progress} />
+            <ProgressBlock title="Blocked" values={ralphStatus.progress.blocked} />
+          </div>
+        ) : (
+          <div className="empty-state">No Ralph status</div>
+        )}
+      </section>
+
+      <section className="panel" aria-label="Ralph tasks">
+        <div className="panel-heading">
+          <h2>Tasks</h2>
+          <Workflow size={18} />
+        </div>
+        <div className="report-list">
+          {tasks.map((task) => (
+            <button
+              className={task.id === selectedTaskId ? "report-row active" : "report-row"}
+              key={task.id}
+              type="button"
+              onClick={() => checkRalphTask(task.id)}
+            >
+              <span>{task.id}</span>
+              <strong>{task.status}</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel" aria-label="Ralph task detail">
+        <div className="panel-heading">
+          <h2>Task Detail</h2>
+          <CheckCircle2 size={18} />
+        </div>
+        {selectedTask ? (
+          <div className="report-detail">
+            <div className={selectedTask.status === "completed" ? "result pass" : "result fail"}>
+              {selectedTask.status}
+            </div>
+            <h3>{selectedTask.title}</h3>
+            <dl>
+              <div>
+                <dt>Criteria</dt>
+                <dd>{selectedTask.acceptance_criteria.length}</dd>
+              </div>
+              <div>
+                <dt>Tests</dt>
+                <dd>{selectedTask.test_commands.length}</dd>
+              </div>
+              <div>
+                <dt>Deps</dt>
+                <dd>{selectedTask.dependencies.length}</dd>
+              </div>
+            </dl>
+            {ralphReport ? <pre>{JSON.stringify(ralphReport, null, 2)}</pre> : null}
+          </div>
+        ) : (
+          <div className="empty-state">No task selected</div>
+        )}
+      </section>
+    </section>
+  );
+}
+
+function ProgressBlock({ title, values }: { title: string; values: string[] }) {
+  return (
+    <div className="progress-block">
+      <h3>{title}</h3>
+      {values.length === 0 ? <span className="empty-state">None</span> : null}
+      {values.slice(0, 6).map((value) => (
+        <span key={value}>{value}</span>
+      ))}
+    </div>
   );
 }
 

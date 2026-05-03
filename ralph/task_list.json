@@ -716,6 +716,156 @@
       "acceptance_criteria": ["Manual smoke script can call LocalLLMInspector against local Ollama"],
       "test_commands": [".venv/bin/python -m pytest tests/unit/test_agents_inspection.py"],
       "dependencies": ["M5.T8"]
+    },
+    {
+      "id": "M8.T1",
+      "title": "Define ralph/task_list.json generator input rules",
+      "status": "completed",
+      "source_doc": "ralph/generator_rules.md",
+      "requirements": ["F9.1", "F9.2"],
+      "acceptance_criteria": ["Ralph task generator rules are documented"],
+      "test_commands": ["test -f ralph/generator_rules.md"],
+      "dependencies": ["M5.T9"]
+    },
+    {
+      "id": "M8.T2",
+      "title": "Implement task generator from SRS requirement IDs",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F9.1"],
+      "acceptance_criteria": ["task_from_requirement and generate_task_list create valid Ralph tasks"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_ralph_helpers.py"],
+      "dependencies": ["M8.T1"]
+    },
+    {
+      "id": "M8.T3",
+      "title": "Create initial ralph/task_list.json",
+      "status": "completed",
+      "source_doc": "ralph/task_list.json",
+      "requirements": ["F9.1"],
+      "acceptance_criteria": ["ralph/task_list.json exists and parses as JSON"],
+      "test_commands": [".venv/bin/python -m json.tool ralph/task_list.json"],
+      "dependencies": ["M8.T2"]
+    },
+    {
+      "id": "M8.T4",
+      "title": "Create ralph/progress.txt",
+      "status": "completed",
+      "source_doc": "ralph/progress.txt",
+      "requirements": ["F9.3"],
+      "acceptance_criteria": ["progress.txt tracks completed, in-progress, blocked, and failure sections"],
+      "test_commands": ["test -f ralph/progress.txt"],
+      "dependencies": ["M8.T3"]
+    },
+    {
+      "id": "M8.T5",
+      "title": "Create ralph/acceptance_gate.md",
+      "status": "completed",
+      "source_doc": "ralph/acceptance_gate.md",
+      "requirements": ["F9.5"],
+      "acceptance_criteria": ["acceptance gate records task evidence"],
+      "test_commands": ["test -f ralph/acceptance_gate.md"],
+      "dependencies": ["M8.T4"]
+    },
+    {
+      "id": "M8.T6",
+      "title": "Create ralph/iteration_log.md",
+      "status": "completed",
+      "source_doc": "ralph/iteration_log.md",
+      "requirements": ["F9.3"],
+      "acceptance_criteria": ["iteration log records milestone activity"],
+      "test_commands": ["test -f ralph/iteration_log.md"],
+      "dependencies": ["M8.T4"]
+    },
+    {
+      "id": "M8.T7",
+      "title": "Implement task selector",
+      "status": "completed",
+      "source_doc": "packages/harness/src/promptspec_harness/ralph.py",
+      "requirements": ["F9.2"],
+      "acceptance_criteria": ["select_next_task returns the next dependency-ready pending task"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_ralph_helpers.py"],
+      "dependencies": ["M8.T2"]
+    },
+    {
+      "id": "M8.T8",
+      "title": "Implement dependency validation",
+      "status": "completed",
+      "source_doc": "packages/harness/src/promptspec_harness/ralph.py",
+      "requirements": ["F9.2"],
+      "acceptance_criteria": ["task selection respects completed dependencies"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_ralph_helpers.py"],
+      "dependencies": ["M8.T7"]
+    },
+    {
+      "id": "M8.T9",
+      "title": "Implement required test command validation",
+      "status": "completed",
+      "source_doc": "packages/harness/src/promptspec_harness/ralph.py",
+      "requirements": ["F9.2", "F9.5"],
+      "acceptance_criteria": ["validate_task_contract checks acceptance criteria and test commands"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_ralph_helpers.py"],
+      "dependencies": ["M8.T7"]
+    },
+    {
+      "id": "M8.T10",
+      "title": "Implement ralph-check CLI",
+      "status": "completed",
+      "source_doc": "ralph_check.py",
+      "requirements": ["F9.5"],
+      "acceptance_criteria": ["ralph_check.py returns a TestReport for a task"],
+      "test_commands": [".venv/bin/python ralph_check.py M1.T1"],
+      "dependencies": ["M8.T9"]
+    },
+    {
+      "id": "M8.T11",
+      "title": "Implement acceptance evidence writer",
+      "status": "completed",
+      "source_doc": "packages/harness/src/promptspec_harness/ralph.py",
+      "requirements": ["F9.5", "F9.6"],
+      "acceptance_criteria": ["append_acceptance_evidence writes acceptance rows"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_ralph_helpers.py"],
+      "dependencies": ["M8.T9"]
+    },
+    {
+      "id": "M8.T12",
+      "title": "Implement failure report writer",
+      "status": "completed",
+      "source_doc": "packages/harness/src/promptspec_harness/ralph.py",
+      "requirements": ["F9.4"],
+      "acceptance_criteria": ["write_failure_report writes reports/ralph/failure_<task_id>.md"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_ralph_helpers.py"],
+      "dependencies": ["M8.T9"]
+    },
+    {
+      "id": "M8.T13",
+      "title": "Implement /api/ralph/status backing logic",
+      "status": "completed",
+      "source_doc": "services/api/src/promptspec_api/app.py",
+      "requirements": ["F9.3"],
+      "acceptance_criteria": ["Ralph status endpoint uses Ralph task helpers"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M8.T9"]
+    },
+    {
+      "id": "M8.T14",
+      "title": "Implement Ralph Dashboard",
+      "status": "completed",
+      "source_doc": "apps/web/app/page.tsx",
+      "requirements": ["F9.3", "F9.5"],
+      "acceptance_criteria": ["Web UI exposes Ralph progress, task list, and task check result"],
+      "test_commands": ["corepack pnpm --filter promptspec-web build"],
+      "dependencies": ["M8.T13"]
+    },
+    {
+      "id": "M8.T15",
+      "title": "Add Ralph workflow tests",
+      "status": "completed",
+      "source_doc": "tests/unit/test_ralph_helpers.py",
+      "requirements": ["F9.1", "F9.2", "F9.3", "F9.4", "F9.5", "F9.6"],
+      "acceptance_criteria": ["Unit and integration tests cover Ralph helper and API workflow"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_ralph_helpers.py tests/integration/test_api.py"],
+      "dependencies": ["M8.T14"]
     }
   ]
 }

@@ -28,3 +28,15 @@ test("test lab and trace views expose reports and traces", async ({ page }) => {
   await expect(page.getByLabel("Trace list")).toContainText("trace_local_001");
   await expect(page.getByLabel("Trace detail")).toContainText("backend engineers");
 });
+
+test("ralph dashboard exposes progress and task checks", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Ralph" }).click();
+
+  await expect(page.getByLabel("Ralph progress")).toContainText("Completed");
+  await expect(page.getByLabel("Ralph tasks")).toContainText("M8.T10");
+
+  await page.getByRole("button", { name: /M8.T10/ }).click();
+  await expect(page.getByLabel("Ralph task detail")).toContainText("pass");
+});

@@ -85,3 +85,21 @@
 - Verified typecheck, lint, production build, and backend checks.
 - Playwright remains blocked by missing `libglib-2.0.so.0`, so this state is
   tagged as `M7-temp` rather than `M7`.
+
+## M8 Ralph Loop Integration
+
+- Added Ralph task generator rules.
+- Implemented Ralph task generation, loading, writing, selection, contract check,
+  acceptance evidence, and failure report helpers.
+- Added `ralph_check.py` CLI.
+- Updated Ralph API status/check backing logic to use Ralph helpers.
+- Added Ralph Dashboard in the web UI.
+- Added Ralph workflow unit and integration tests.
+- Verification passed:
+  - `.venv/bin/python ralph_check.py M1.T1`
+  - `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration`
+  - `corepack pnpm --filter promptspec-web typecheck`
+  - `corepack pnpm --filter promptspec-web lint`
+  - `corepack pnpm --filter promptspec-web build`
+  - `.venv/bin/ruff check .`
+  - `.venv/bin/mypy`

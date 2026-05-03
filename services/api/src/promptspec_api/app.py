@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any, Protocol
 
 from fastapi import FastAPI
 from promptspec_engine import render_prompt, resolve_prompt_spec, validate_prompt
+from promptspec_harness.ralph import load_tasks, validate_task_contract
 from promptspec_harness.runner import HarnessRunner
 from promptspec_model import (
     MeaningReport,
@@ -114,7 +114,11 @@ def create_app(
     def ralph_status_endpoint() -> dict[str, Any]:
         task_list_path = root / "ralph/task_list.json"
         progress_path = root / "ralph/progress.txt"
-        tasks = json.loads(task_list_path.read_text())["tasks"] if task_list_path.exists() else []
+        tasks = (
+            [task.model_dump() for task in load_tasks(task_list_path)]
+            if task_list_path.exists()
+            else []
+        )
         progress_text = progress_path.read_text() if progress_path.exists() else ""
         return {"tasks": tasks, "progress": _parse_progress(progress_text)}
 
@@ -123,19 +127,12 @@ def create_app(
         task_list_path = root / "ralph/task_list.json"
         if not task_list_path.exists():
             return error_response(404, "NOT_FOUND", "Ralph task list not found")  # type: ignore[return-value]
-        tasks = json.loads(task_list_path.read_text())["tasks"]
-        task = next((item for item in tasks if item["id"] == payload.task_id), None)
+        tasks = load_tasks(task_list_path)
+        task = next((item for item in tasks if item.id == payload.task_id), None)
         if task is None:
             return error_response(404, "NOT_FOUND", f"Task not found: {payload.task_id}")  # type: ignore[return-value]
 
-        has_contract = bool(task.get("acceptance_criteria")) and bool(task.get("test_commands"))
-        return TestReport(
-            report_id=f"ralph_{payload.task_id}",
-            suite="ralph",
-            status="pass" if has_contract else "fail",
-            commands=task.get("test_commands", []),
-            artifacts=[],
-        )
+        return validate_task_contract(task)
 
     return app
 

@@ -63,6 +63,21 @@ Completed:
 - M5.T7 Store raw model output in trace logs
 - M5.T8 Add mocked LLM tests
 - M5.T9 Add one local-manual smoke test script
+- M8.T1 Define ralph/task_list.json generator input rules
+- M8.T2 Implement task generator from SRS requirement IDs
+- M8.T3 Create initial ralph/task_list.json
+- M8.T4 Create ralph/progress.txt
+- M8.T5 Create ralph/acceptance_gate.md
+- M8.T6 Create ralph/iteration_log.md
+- M8.T7 Implement task selector
+- M8.T8 Implement dependency validation
+- M8.T9 Implement required test command validation
+- M8.T10 Implement ralph-check CLI
+- M8.T11 Implement acceptance evidence writer
+- M8.T12 Implement failure report writer
+- M8.T13 Implement /api/ralph/status backing logic
+- M8.T14 Implement Ralph Dashboard
+- M8.T15 Add Ralph workflow tests
 
 In Progress:
 - M6 Web UI Prompt Studio
