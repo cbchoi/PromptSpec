@@ -66,9 +66,11 @@ Completed:
 
 In Progress:
 - M6 Web UI Prompt Studio
+- M7 Test Lab and Agent Trace UI
 
 Blocked:
 - M6 Playwright smoke test blocked by missing Chromium system dependency libglib-2.0.so.0 in container
+- M7 Playwright smoke test blocked by missing Chromium system dependency libglib-2.0.so.0 in container
 
 Last Failure:
 - None

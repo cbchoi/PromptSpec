@@ -2,23 +2,31 @@
 
 import {
   AlertTriangle,
+  Beaker,
   CheckCircle2,
   Download,
   FileJson,
+  GitBranch,
   Plus,
   RefreshCcw,
   Save,
   Settings,
   Trash2,
-  Upload
+  Upload,
+  Workflow
 } from "lucide-react";
 import { ChangeEvent, useMemo, useState } from "react";
 import {
+  AgentTrace,
   PromptSlot,
+  TestReport,
   ValidationReport,
   defaultSettings,
+  fetchTestReport,
   renderLocal,
   resolveRenderValidate,
+  runTestSuite,
+  sampleTraces,
   slotTypes,
   sourceTypes
 } from "../lib/api";
@@ -47,12 +55,19 @@ const initialSlots: PromptSlot[] = [
 ];
 
 export default function PromptStudioPage() {
+  const [activeView, setActiveView] = useState<"studio" | "tests" | "traces">("studio");
   const [slots, setSlots] = useState<PromptSlot[]>(initialSlots);
   const [selectedKey, setSelectedKey] = useState("audience");
   const [renderedText, setRenderedText] = useState("");
   const [validation, setValidation] = useState<ValidationReport | null>(null);
   const [settings, setSettings] = useState(defaultSettings);
   const [status, setStatus] = useState("Ready");
+  const [suite, setSuite] = useState<TestReport["suite"]>("scenario");
+  const [testReports, setTestReports] = useState<TestReport[]>([]);
+  const [selectedReportId, setSelectedReportId] = useState("");
+  const [selectedReport, setSelectedReport] = useState<TestReport | null>(null);
+  const [traces] = useState<AgentTrace[]>(sampleTraces());
+  const [selectedTraceId, setSelectedTraceId] = useState("trace_local_001");
 
   const rendered = useMemo(() => renderLocal(slots), [slots]);
   const selectedSlot = slots.find((slot) => slot.key === selectedKey) ?? slots[0];
@@ -95,6 +110,23 @@ export default function PromptStudioPage() {
     setStatus(result.remote ? "API" : "Local");
   }
 
+  async function runSuite() {
+    setStatus("Testing");
+    const result = await runTestSuite(suite, settings.apiBaseUrl);
+    setTestReports((current) => [result.report, ...current.filter((item) => item.report_id !== result.report.report_id)]);
+    setSelectedReport(result.report);
+    setSelectedReportId(result.report.report_id);
+    setStatus(result.remote ? "API" : "Local");
+  }
+
+  async function loadReport(reportId: string) {
+    setSelectedReportId(reportId);
+    const fallback = testReports.find((report) => report.report_id === reportId) ?? null;
+    const result = await fetchTestReport(reportId, settings.apiBaseUrl, fallback);
+    setSelectedReport(result.report);
+    setStatus(result.remote ? "API" : "Local");
+  }
+
   function exportJson() {
     const data = JSON.stringify(slots, null, 2);
     navigator.clipboard?.writeText(data).catch(() => undefined);
@@ -123,6 +155,32 @@ export default function PromptStudioPage() {
           <h1>PromptSpec</h1>
           <p>Prompt Studio</p>
         </div>
+        <nav className="tabs" aria-label="Main views">
+          <button
+            className={activeView === "studio" ? "tab active" : "tab"}
+            type="button"
+            onClick={() => setActiveView("studio")}
+          >
+            <FileJson size={16} />
+            Studio
+          </button>
+          <button
+            className={activeView === "tests" ? "tab active" : "tab"}
+            type="button"
+            onClick={() => setActiveView("tests")}
+          >
+            <Beaker size={16} />
+            Test Lab
+          </button>
+          <button
+            className={activeView === "traces" ? "tab active" : "tab"}
+            type="button"
+            onClick={() => setActiveView("traces")}
+          >
+            <Workflow size={16} />
+            Trace
+          </button>
+        </nav>
         <div className="toolbar">
           <button type="button" onClick={addSlot} title="Add slot" aria-label="Add slot">
             <Plus size={18} />
@@ -137,6 +195,72 @@ export default function PromptStudioPage() {
         </div>
       </header>
 
+      {activeView === "studio" ? (
+        <StudioView
+          deleteSlot={deleteSlot}
+          importJson={importJson}
+          selectedKey={selectedKey}
+          selectedSlot={selectedSlot}
+          setSelectedKey={setSelectedKey}
+          setSettings={setSettings}
+          settings={settings}
+          slots={slots}
+          updateSlot={updateSlot}
+          validation={validation}
+          visibleRenderedText={visibleRenderedText}
+        />
+      ) : null}
+
+      {activeView === "tests" ? (
+        <TestLabView
+          loadReport={loadReport}
+          runSuite={runSuite}
+          selectedReport={selectedReport}
+          selectedReportId={selectedReportId}
+          setSuite={setSuite}
+          suite={suite}
+          testReports={testReports}
+        />
+      ) : null}
+
+      {activeView === "traces" ? (
+        <AgentTraceView
+          selectedTraceId={selectedTraceId}
+          setSelectedTraceId={setSelectedTraceId}
+          traces={traces}
+        />
+      ) : null}
+    </main>
+  );
+}
+
+function StudioView({
+  deleteSlot,
+  importJson,
+  selectedKey,
+  selectedSlot,
+  setSelectedKey,
+  setSettings,
+  settings,
+  slots,
+  updateSlot,
+  validation,
+  visibleRenderedText
+}: {
+  deleteSlot: (key: string) => void;
+  importJson: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  selectedKey: string;
+  selectedSlot: PromptSlot | undefined;
+  setSelectedKey: (key: string) => void;
+  setSettings: (settings: typeof defaultSettings) => void;
+  settings: typeof defaultSettings;
+  slots: PromptSlot[];
+  updateSlot: (index: number, patch: Partial<PromptSlot>) => void;
+  validation: ValidationReport | null;
+  visibleRenderedText: string;
+}) {
+  return (
+    <>
       <section className="workspace">
         <section className="panel slot-panel" aria-label="Slot table">
           <div className="panel-heading">
@@ -197,11 +321,7 @@ export default function PromptStudioPage() {
             <h2>Import</h2>
             <Upload size={18} />
           </div>
-          <textarea
-            aria-label="Import JSON"
-            placeholder="Paste slot JSON"
-            onChange={importJson}
-          />
+          <textarea aria-label="Import JSON" placeholder="Paste slot JSON" onChange={importJson} />
         </div>
         <div className="settings-area">
           <div className="panel-heading compact">
@@ -226,7 +346,173 @@ export default function PromptStudioPage() {
           </label>
         </div>
       </section>
-    </main>
+    </>
+  );
+}
+
+function TestLabView({
+  loadReport,
+  runSuite,
+  selectedReport,
+  selectedReportId,
+  setSuite,
+  suite,
+  testReports
+}: {
+  loadReport: (reportId: string) => void;
+  runSuite: () => void;
+  selectedReport: TestReport | null;
+  selectedReportId: string;
+  setSuite: (suite: TestReport["suite"]) => void;
+  suite: TestReport["suite"];
+  testReports: TestReport[];
+}) {
+  return (
+    <section className="lab-layout">
+      <section className="panel" aria-label="Test cases">
+        <div className="panel-heading">
+          <h2>Test Cases</h2>
+          <Beaker size={18} />
+        </div>
+        <div className="suite-controls">
+          <select value={suite} onChange={(event) => setSuite(event.target.value as TestReport["suite"])}>
+            {["unit", "integration", "scenario", "regression", "e2e", "ralph"].map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+          <button type="button" onClick={runSuite}>
+            Run
+          </button>
+        </div>
+        <div className="case-list">
+          <button className="case-row active" type="button">
+            <span>scenario_pass_case</span>
+            <strong>fixture</strong>
+          </button>
+          <button className="case-row" type="button">
+            <span>expected_failure_probe</span>
+            <strong>unit</strong>
+          </button>
+        </div>
+      </section>
+
+      <section className="panel" aria-label="Test reports">
+        <div className="panel-heading">
+          <h2>Reports</h2>
+          <GitBranch size={18} />
+        </div>
+        <div className="report-list">
+          {testReports.length === 0 ? <div className="empty-state">No reports</div> : null}
+          {testReports.map((report) => (
+            <button
+              className={report.report_id === selectedReportId ? "report-row active" : "report-row"}
+              key={report.report_id}
+              type="button"
+              onClick={() => loadReport(report.report_id)}
+            >
+              <span>{report.report_id}</span>
+              <strong>{report.status}</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel" aria-label="Report detail">
+        <div className="panel-heading">
+          <h2>Detail</h2>
+          <AlertTriangle size={18} />
+        </div>
+        {selectedReport ? (
+          <div className="report-detail">
+            <div className={selectedReport.status === "pass" ? "result pass" : "result fail"}>
+              {selectedReport.status}
+            </div>
+            <dl>
+              <div>
+                <dt>Suite</dt>
+                <dd>{selectedReport.suite}</dd>
+              </div>
+              <div>
+                <dt>Commands</dt>
+                <dd>{selectedReport.commands.length}</dd>
+              </div>
+              <div>
+                <dt>Artifacts</dt>
+                <dd>{selectedReport.artifacts.length}</dd>
+              </div>
+            </dl>
+            <pre>{JSON.stringify(selectedReport, null, 2)}</pre>
+          </div>
+        ) : (
+          <div className="empty-state">No report selected</div>
+        )}
+      </section>
+    </section>
+  );
+}
+
+function AgentTraceView({
+  selectedTraceId,
+  setSelectedTraceId,
+  traces
+}: {
+  selectedTraceId: string;
+  setSelectedTraceId: (id: string) => void;
+  traces: AgentTrace[];
+}) {
+  const selectedTrace = traces.find((trace) => trace.id === selectedTraceId) ?? traces[0];
+
+  return (
+    <section className="trace-layout">
+      <section className="panel" aria-label="Trace list">
+        <div className="panel-heading">
+          <h2>Traces</h2>
+          <Workflow size={18} />
+        </div>
+        <div className="report-list">
+          {traces.map((trace) => (
+            <button
+              className={trace.id === selectedTraceId ? "report-row active" : "report-row"}
+              key={trace.id}
+              type="button"
+              onClick={() => setSelectedTraceId(trace.id)}
+            >
+              <span>{trace.id}</span>
+              <strong>{trace.status}</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel" aria-label="Trace detail">
+        <div className="panel-heading">
+          <h2>Trace Detail</h2>
+          <CheckCircle2 size={18} />
+        </div>
+        <div className="trace-detail">
+          <dl>
+            <div>
+              <dt>Spec</dt>
+              <dd>{selectedTrace.specId}</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>{selectedTrace.status}</dd>
+            </div>
+            <div>
+              <dt>Uncertain</dt>
+              <dd>{selectedTrace.uncertainties.length}</dd>
+            </div>
+          </dl>
+          <h3>Prompt</h3>
+          <pre>{selectedTrace.prompt}</pre>
+          <h3>Raw Model</h3>
+          <pre>{selectedTrace.rawModel}</pre>
+          <h3>Meaning</h3>
+          <pre>{JSON.stringify(selectedTrace.meaning, null, 2)}</pre>
+        </div>
+      </section>
+    </section>
   );
 }
 
@@ -364,4 +650,3 @@ function ValidationView({ report }: { report: ValidationReport | null }) {
     </div>
   );
 }
-

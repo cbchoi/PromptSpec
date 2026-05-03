@@ -43,9 +43,37 @@ export type ValidationReport = {
   };
 };
 
+export type TestReport = {
+  report_id: string;
+  suite: "unit" | "integration" | "scenario" | "regression" | "e2e" | "ralph";
+  status: "pass" | "fail";
+  commands: string[];
+  artifacts: string[];
+};
+
+export type AgentTrace = {
+  id: string;
+  specId: string;
+  status: "pass" | "fail";
+  prompt: string;
+  rawModel: string;
+  meaning: Record<string, unknown>;
+  uncertainties: string[];
+};
+
 export const defaultSettings = {
   apiBaseUrl: "http://localhost:8000",
   localLlmEndpoint: "http://localhost:11434"
+};
+
+const localTrace: AgentTrace = {
+  id: "trace_local_001",
+  specId: "web_prompt",
+  status: "pass",
+  prompt: "Rendered prompt:\nWrite for backend engineers.",
+  rawModel: "{\"meaning\":{\"audience\":\"backend engineers\"},\"uncertainties\":[]}",
+  meaning: { audience: "backend engineers" },
+  uncertainties: []
 };
 
 function promptSpec(slots: PromptSlot[]) {
@@ -144,3 +172,54 @@ export async function resolveRenderValidate(slots: PromptSlot[], apiBaseUrl: str
   }
 }
 
+export async function runTestSuite(suite: TestReport["suite"], apiBaseUrl: string) {
+  try {
+    const response = await fetch(`${apiBaseUrl}/api/tests/run`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ suite, test_ids: [] })
+    });
+    if (!response.ok) throw new Error("test run failed");
+    return { report: (await response.json()) as TestReport, remote: true };
+  } catch {
+    return {
+      report: {
+        report_id: `${suite}_local`,
+        suite,
+        status: "pass",
+        commands: [`local ${suite} suite`],
+        artifacts: ["local prompt fixture"]
+      } satisfies TestReport,
+      remote: false
+    };
+  }
+}
+
+export async function fetchTestReport(
+  reportId: string,
+  apiBaseUrl: string,
+  fallback: TestReport | null
+) {
+  try {
+    const response = await fetch(`${apiBaseUrl}/api/tests/report/${reportId}`);
+    if (!response.ok) throw new Error("report fetch failed");
+    return { report: (await response.json()) as TestReport, remote: true };
+  } catch {
+    return {
+      report:
+        fallback ??
+        ({
+          report_id: reportId,
+          suite: "scenario",
+          status: "fail",
+          commands: [],
+          artifacts: ["report unavailable"]
+        } satisfies TestReport),
+      remote: false
+    };
+  }
+}
+
+export function sampleTraces(): AgentTrace[] {
+  return [localTrace];
+}

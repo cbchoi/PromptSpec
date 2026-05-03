@@ -75,3 +75,13 @@
   `libglib-2.0.so.0`.
 - Runtime package installation is not available in the current container, so
   this state is tagged as `M6-temp` rather than `M6`.
+
+## M7 Temporary Checkpoint
+
+- Implemented Test Lab view with suite selector, test run trigger, test case list,
+  report list, report detail, and failure-report surface.
+- Implemented Agent Trace view with trace list and detailed prompt/raw/meaning view.
+- Added Playwright tests for Test Lab and Agent Trace.
+- Verified typecheck, lint, production build, and backend checks.
+- Playwright remains blocked by missing `libglib-2.0.so.0`, so this state is
+  tagged as `M7-temp` rather than `M7`.

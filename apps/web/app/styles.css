@@ -70,6 +70,31 @@ h1 {
   gap: 8px;
 }
 
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.tab {
+  height: 38px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.tab.active {
+  border-color: var(--blue);
+  color: var(--ink);
+  background: #f8fbff;
+}
+
 .toolbar button,
 .delete-button {
   width: 38px;
@@ -106,6 +131,22 @@ h1 {
   flex: 1;
 }
 
+.lab-layout,
+.trace-layout {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  flex: 1;
+}
+
+.lab-layout {
+  grid-template-columns: minmax(240px, 0.9fr) minmax(260px, 1fr) minmax(360px, 1.5fr);
+}
+
+.trace-layout {
+  grid-template-columns: minmax(260px, 0.8fr) minmax(420px, 1.7fr);
+}
+
 .panel,
 .import-area,
 .settings-area {
@@ -137,7 +178,9 @@ h1 {
   gap: 6px;
 }
 
-.slot-row {
+.slot-row,
+.case-row,
+.report-row {
   height: 42px;
   border: 1px solid var(--line);
   background: #fbfcfa;
@@ -150,7 +193,9 @@ h1 {
   cursor: pointer;
 }
 
-.slot-row.active {
+.slot-row.active,
+.case-row.active,
+.report-row.active {
   outline: 2px solid var(--blue);
   outline-offset: -2px;
 }
@@ -281,6 +326,51 @@ textarea:focus {
   gap: 12px;
 }
 
+.suite-controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.suite-controls button {
+  min-width: 78px;
+  border: 1px solid var(--blue);
+  background: var(--blue);
+  color: white;
+  cursor: pointer;
+}
+
+.case-list,
+.report-list,
+.report-detail,
+.trace-detail {
+  display: grid;
+  gap: 8px;
+}
+
+.case-row,
+.report-row {
+  grid-template-columns: 1fr auto;
+}
+
+pre {
+  max-width: 100%;
+  overflow: auto;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: #fbfcfa;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+h3 {
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+
 .result {
   width: max-content;
   padding: 6px 10px;
@@ -357,7 +447,9 @@ dd {
 }
 
 @media (max-width: 1100px) {
-  .workspace {
+  .workspace,
+  .lab-layout,
+  .trace-layout {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -374,6 +466,8 @@ dd {
   }
 
   .workspace,
+  .lab-layout,
+  .trace-layout,
   .bottom-band {
     display: block;
   }
@@ -389,4 +483,3 @@ dd {
     grid-template-columns: 1fr;
   }
 }
-
