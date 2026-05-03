@@ -79,5 +79,5 @@ Create a milestone tag only after the milestone exit criteria pass.
 - [x] Ralph progress and acceptance files exist.
 - [x] Root tooling config exists.
 - [x] Initial package/test directories exist.
-- [ ] M1 implementation code exists.
-- [ ] M1 tests pass.
+- [x] M1 implementation code exists.
+- [x] M1 tests pass.

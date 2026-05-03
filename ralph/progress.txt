@@ -1,5 +1,14 @@
 Completed:
-- None
+- M1.T1 Define package layout for shared model code
+- M1.T2 Implement PromptSlot model
+- M1.T3 Implement PromptSpec model
+- M1.T4 Implement RenderedPrompt and Span models
+- M1.T5 Implement MeaningReport
+- M1.T6 Implement ValidationReport
+- M1.T7 Implement TestReport
+- M1.T8 Implement RalphTask
+- M1.T9 Add JSON schema export for all canonical models
+- M1.T10 Add unit tests for required fields, enums, defaults, and invalid payloads
 
 In Progress:
 - None
@@ -9,4 +18,3 @@ Blocked:
 
 Last Failure:
 - None
-

@@ -6,4 +6,13 @@ No implementation task has passed acceptance yet.
 
 | Task | Status | Evidence | Commit |
 |---|---|---|---|
-
+| M1.T1 | pass | `.venv/bin/python -m pytest tests/unit`; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M1 tag |
+| M1.T2 | pass | `.venv/bin/python -m pytest tests/unit/test_prompt_slot.py`; included in full unit suite | M1 tag |
+| M1.T3 | pass | `.venv/bin/python -m pytest tests/unit/test_prompt_spec.py`; included in full unit suite | M1 tag |
+| M1.T4 | pass | `.venv/bin/python -m pytest tests/unit/test_rendered_prompt.py`; included in full unit suite | M1 tag |
+| M1.T5 | pass | `.venv/bin/python -m pytest tests/unit/test_meaning_report.py`; included in full unit suite | M1 tag |
+| M1.T6 | pass | `.venv/bin/python -m pytest tests/unit/test_validation_report.py`; included in full unit suite | M1 tag |
+| M1.T7 | pass | `.venv/bin/python -m pytest tests/unit/test_test_report.py`; included in full unit suite | M1 tag |
+| M1.T8 | pass | `.venv/bin/python -m pytest tests/unit/test_ralph_task.py`; included in full unit suite | M1 tag |
+| M1.T9 | pass | `.venv/bin/python -m pytest tests/unit/test_schema_export.py`; included in full unit suite | M1 tag |
+| M1.T10 | pass | `.venv/bin/python -m pytest tests/unit` passed 34 tests | M1 tag |

@@ -3,7 +3,7 @@
     {
       "id": "M1.T1",
       "title": "Define package layout for shared model code",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/milestones/README.md",
       "requirements": ["F1.2", "F3.2", "F4.2", "F6.4", "F9.2"],
       "acceptance_criteria": [
@@ -15,14 +15,14 @@
       "test_commands": [
         "test -d packages/model/src/promptspec_model",
         "test -d tests/unit",
-        "python -m pytest --collect-only tests"
+        ".venv/bin/python -m pytest --collect-only tests"
       ],
       "dependencies": []
     },
     {
       "id": "M1.T2",
       "title": "Implement PromptSlot model",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/Data_Model.md",
       "requirements": ["F1.2"],
       "acceptance_criteria": [
@@ -33,14 +33,14 @@
         "PromptSlot defaults match Data_Model.md where applicable"
       ],
       "test_commands": [
-        "python -m pytest tests/unit/test_prompt_slot.py"
+        ".venv/bin/python -m pytest tests/unit/test_prompt_slot.py"
       ],
       "dependencies": ["M1.T1"]
     },
     {
       "id": "M1.T3",
       "title": "Implement PromptSpec model",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/Data_Model.md",
       "requirements": ["F1.2"],
       "acceptance_criteria": [
@@ -50,14 +50,14 @@
         "PromptSpec preserves strategy values for renderer, validator, and inspector"
       ],
       "test_commands": [
-        "python -m pytest tests/unit/test_prompt_spec.py"
+        ".venv/bin/python -m pytest tests/unit/test_prompt_spec.py"
       ],
       "dependencies": ["M1.T2"]
     },
     {
       "id": "M1.T4",
       "title": "Implement RenderedPrompt and Span models",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/Data_Model.md",
       "requirements": ["F3.2"],
       "acceptance_criteria": [
@@ -67,14 +67,14 @@
         "RenderedPrompt exposes spec_id, text, and spans fields"
       ],
       "test_commands": [
-        "python -m pytest tests/unit/test_rendered_prompt.py"
+        ".venv/bin/python -m pytest tests/unit/test_rendered_prompt.py"
       ],
       "dependencies": ["M1.T1"]
     },
     {
       "id": "M1.T5",
       "title": "Implement MeaningReport",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/Data_Model.md",
       "requirements": ["F4.2", "F4.3"],
       "acceptance_criteria": [
@@ -84,14 +84,14 @@
         "MeaningReport rejects non-object meaning values"
       ],
       "test_commands": [
-        "python -m pytest tests/unit/test_meaning_report.py"
+        ".venv/bin/python -m pytest tests/unit/test_meaning_report.py"
       ],
       "dependencies": ["M1.T1"]
     },
     {
       "id": "M1.T6",
       "title": "Implement ValidationReport",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/Data_Model.md",
       "requirements": ["F5.1", "F5.2", "F5.3", "F5.4", "F5.5"],
       "acceptance_criteria": [
@@ -101,14 +101,14 @@
         "Validation metrics include slot_coverage, conflict_count, critical_over_generation, and meaning_schema_valid"
       ],
       "test_commands": [
-        "python -m pytest tests/unit/test_validation_report.py"
+        ".venv/bin/python -m pytest tests/unit/test_validation_report.py"
       ],
       "dependencies": ["M1.T1"]
     },
     {
       "id": "M1.T7",
       "title": "Implement TestReport",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/Data_Model.md",
       "requirements": ["F6.4"],
       "acceptance_criteria": [
@@ -118,14 +118,14 @@
         "TestReport defaults commands and artifacts to empty lists"
       ],
       "test_commands": [
-        "python -m pytest tests/unit/test_test_report.py"
+        ".venv/bin/python -m pytest tests/unit/test_test_report.py"
       ],
       "dependencies": ["M1.T1"]
     },
     {
       "id": "M1.T8",
       "title": "Implement RalphTask",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/Data_Model.md",
       "requirements": ["F9.2"],
       "acceptance_criteria": [
@@ -135,14 +135,14 @@
         "RalphTask rejects implementation tasks without test commands"
       ],
       "test_commands": [
-        "python -m pytest tests/unit/test_ralph_task.py"
+        ".venv/bin/python -m pytest tests/unit/test_ralph_task.py"
       ],
       "dependencies": ["M1.T1"]
     },
     {
       "id": "M1.T9",
       "title": "Add JSON schema export for all canonical models",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/Data_Model.md",
       "requirements": ["F7.2"],
       "acceptance_criteria": [
@@ -151,14 +151,14 @@
         "Generated schemas can be serialized to JSON"
       ],
       "test_commands": [
-        "python -m pytest tests/unit/test_schema_export.py"
+        ".venv/bin/python -m pytest tests/unit/test_schema_export.py"
       ],
       "dependencies": ["M1.T2", "M1.T3", "M1.T4", "M1.T5", "M1.T6", "M1.T7", "M1.T8"]
     },
     {
       "id": "M1.T10",
       "title": "Add unit tests for required fields, enums, defaults, and invalid payloads",
-      "status": "pending",
+      "status": "completed",
       "source_doc": "docs/milestones/README.md",
       "requirements": ["F1.2", "F3.2", "F4.2", "F6.4", "F9.2"],
       "acceptance_criteria": [
@@ -169,7 +169,7 @@
         "Tests cover representative invalid payloads"
       ],
       "test_commands": [
-        "python -m pytest tests/unit"
+        ".venv/bin/python -m pytest tests/unit"
       ],
       "dependencies": ["M1.T2", "M1.T3", "M1.T4", "M1.T5", "M1.T6", "M1.T7", "M1.T8", "M1.T9"]
     }
