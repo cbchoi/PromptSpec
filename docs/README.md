@@ -16,6 +16,8 @@
 - HTTP contracts: `API_Specification.md`
 - Ralph workflow: `Ralph_Loop_Specification.md`
 - Milestone task plan: `milestones/README.md`
+- Implementation readiness: `implementation/Readiness.md`
+- Requirement traceability: `implementation/Traceability_Matrix.md`
 
 ## Goal
 Build a local/web-compatible tool for slot-based prompt design, dynamic prompt composition, rendering, meaning inspection, validation, and test-driven prompt engineering.
