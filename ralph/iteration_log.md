@@ -113,3 +113,12 @@
 - Verified web build and backend checks.
 - Tauri build is blocked because `rustc` and `cargo` are not installed, so this
   state is tagged as `M9-temp` rather than `M9`.
+
+## M10 Temporary Checkpoint
+
+- Added quality metrics and quality gate evaluator.
+- Added quality report export and prompt version diff helper.
+- Added quality gate CLI.
+- Added CI workflow for backend and web static/build checks.
+- Added release checklist and M10 temporary checkpoint documentation.
+- Final release gate remains blocked until M6, M7, and M9 can be completed.

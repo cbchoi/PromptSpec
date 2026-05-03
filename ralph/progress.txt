@@ -78,16 +78,32 @@ Completed:
 - M8.T13 Implement /api/ralph/status backing logic
 - M8.T14 Implement Ralph Dashboard
 - M8.T15 Add Ralph workflow tests
+- M10.T1 Create requirement traceability matrix
+- M10.T2 Map every SRS requirement to implementation tasks
+- M10.T3 Map every SRS requirement to tests
+- M10.T4 Implement quality metrics aggregation
+- M10.T5 Implement slot coverage metric
+- M10.T6 Implement render fidelity metric
+- M10.T7 Implement conflict and ambiguity count metrics
+- M10.T8 Implement over-generation count metric
+- M10.T9 Add prompt version diff export
+- M10.T10 Add report export
+- M10.T11 Add CI workflow
+- M10.T12 Add full regression suite command
+- M10.T13 Add release checklist
+- M10.T14 Run final SRS compliance review
 
 In Progress:
 - M6 Web UI Prompt Studio
 - M7 Test Lab and Agent Trace UI
 - M9 Desktop Packaging
+- M10 Quality Gate and Release Readiness
 
 Blocked:
 - M6 Playwright smoke test blocked by missing Chromium system dependency libglib-2.0.so.0 in container
 - M7 Playwright smoke test blocked by missing Chromium system dependency libglib-2.0.so.0 in container
 - M9 Tauri build blocked because rustc and cargo are not installed in container
+- M10 final release gate blocked until M6, M7, and M9 have non-temporary tags
 
 Last Failure:
 - None

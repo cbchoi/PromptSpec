@@ -21,3 +21,4 @@ No implementation task has passed acceptance yet.
 | M4.T1-M4.T15 | pass | `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration` passed 66 tests; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M4 tag |
 | M5.T1-M5.T9 | pass | `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration` passed 71 tests; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M5 tag |
 | M8.T1-M8.T15 | pass | `.venv/bin/python ralph_check.py M1.T1`; `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration` passed 75 tests; `corepack pnpm --filter promptspec-web build`; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M8 tag |
+| M10.T1-M10.T14 | temp-pass | `.venv/bin/python quality_gate.py --allow-blockers`; `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration` passed 79 tests; `corepack pnpm --filter promptspec-web build`; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M10-temp tag |
