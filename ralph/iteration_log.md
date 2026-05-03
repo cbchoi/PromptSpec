@@ -103,3 +103,13 @@
   - `corepack pnpm --filter promptspec-web build`
   - `.venv/bin/ruff check .`
   - `.venv/bin/mypy`
+
+## M9 Temporary Checkpoint
+
+- Added Tauri desktop app structure.
+- Configured desktop shell to use the shared Next.js frontend.
+- Added desktop startup/default endpoint commands.
+- Added desktop environment check script and smoke checklist.
+- Verified web build and backend checks.
+- Tauri build is blocked because `rustc` and `cargo` are not installed, so this
+  state is tagged as `M9-temp` rather than `M9`.

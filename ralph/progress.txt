@@ -82,10 +82,12 @@ Completed:
 In Progress:
 - M6 Web UI Prompt Studio
 - M7 Test Lab and Agent Trace UI
+- M9 Desktop Packaging
 
 Blocked:
 - M6 Playwright smoke test blocked by missing Chromium system dependency libglib-2.0.so.0 in container
 - M7 Playwright smoke test blocked by missing Chromium system dependency libglib-2.0.so.0 in container
+- M9 Tauri build blocked because rustc and cargo are not installed in container
 
 Last Failure:
 - None

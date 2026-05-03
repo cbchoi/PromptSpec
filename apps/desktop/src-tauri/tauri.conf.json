@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "PromptSpec",
+  "version": "0.1.0",
+  "identifier": "dev.promptspec.app",
+  "build": {
+    "beforeDevCommand": "corepack pnpm --filter promptspec-web dev",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "corepack pnpm --filter promptspec-web build",
+    "frontendDist": "../../apps/web/.next"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "PromptSpec",
+        "width": 1280,
+        "height": 820,
+        "minWidth": 960,
+        "minHeight": 640
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": []
+  }
+}
+
