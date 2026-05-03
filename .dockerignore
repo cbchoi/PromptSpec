@@ -1,0 +1,16 @@
+.git
+.venv
+node_modules
+apps/*/node_modules
+apps/web/.next
+apps/web/test-results
+apps/web/playwright-report
+.mypy_cache
+.pytest_cache
+.ruff_cache
+promptspec.egg-info
+reports/tests/*.json
+reports/agents/inspection_*.json
+__pycache__
+*.pyc
+*.tsbuildinfo

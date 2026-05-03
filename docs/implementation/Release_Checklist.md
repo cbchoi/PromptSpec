@@ -23,6 +23,8 @@
 ## Release Command Set
 
 ```bash
+.venv/bin/python -m pip install -e ".[dev]"
+corepack pnpm install
 .venv/bin/python -m pytest tests/unit tests/scenario tests/integration
 .venv/bin/ruff check .
 .venv/bin/mypy
