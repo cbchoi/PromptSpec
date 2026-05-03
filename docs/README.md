@@ -15,6 +15,7 @@
 - Data contracts: `Data_Model.md`
 - HTTP contracts: `API_Specification.md`
 - Ralph workflow: `Ralph_Loop_Specification.md`
+- Milestone task plan: `milestones/README.md`
 
 ## Goal
 Build a local/web-compatible tool for slot-based prompt design, dynamic prompt composition, rendering, meaning inspection, validation, and test-driven prompt engineering.
