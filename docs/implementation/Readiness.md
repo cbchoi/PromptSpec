@@ -51,6 +51,24 @@ The current scaffold already creates the intended package and test directories.
 The next implementation step should add tests and Pydantic models under
 `packages/model/src/promptspec_model/`.
 
+## Milestone Tags
+
+Use git tags to mark completed milestones:
+
+- `M0`: implementation-ready baseline
+- `M1`: Core Contracts complete
+- `M2`: Prompt Engine MVP complete
+- `M3`: Test Harness complete
+- `M4`: FastAPI Backend complete
+- `M5`: Local LLM Meaning Inspector complete
+- `M6`: Web UI Prompt Studio complete
+- `M7`: Test Lab and Agent Trace UI complete
+- `M8`: Ralph Loop Integration complete
+- `M9`: Desktop Packaging complete
+- `M10`: Quality Gate and Release Readiness complete
+
+Create a milestone tag only after the milestone exit criteria pass.
+
 ## Readiness Checklist
 
 - [x] SRS has stable requirement IDs.
@@ -63,4 +81,3 @@ The next implementation step should add tests and Pydantic models under
 - [x] Initial package/test directories exist.
 - [ ] M1 implementation code exists.
 - [ ] M1 tests pass.
-
