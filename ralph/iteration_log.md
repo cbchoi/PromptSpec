@@ -9,3 +9,17 @@
   - `.venv/bin/python -m pytest tests/unit`
   - `.venv/bin/ruff check .`
   - `.venv/bin/mypy`
+
+## M2 Prompt Engine MVP
+
+- Implemented slot registry CRUD logic.
+- Implemented JSON/YAML slot import and export.
+- Implemented deterministic condition evaluation.
+- Implemented PromptSpec resolution with parent inheritance, child override, and priority handling.
+- Implemented prompt rendering with exact span metadata.
+- Implemented deterministic validation for missing slots, declared conflicts, over-generation, ambiguity, and span/source fidelity.
+- Added unit tests and an end-to-end scenario test.
+- Verification passed:
+  - `.venv/bin/python -m pytest tests/unit tests/scenario`
+  - `.venv/bin/ruff check .`
+  - `.venv/bin/mypy`

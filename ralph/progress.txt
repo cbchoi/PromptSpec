@@ -9,6 +9,23 @@ Completed:
 - M1.T8 Implement RalphTask
 - M1.T9 Add JSON schema export for all canonical models
 - M1.T10 Add unit tests for required fields, enums, defaults, and invalid payloads
+- M2.T1 Create engine module structure
+- M2.T2 Implement slot registry CRUD logic
+- M2.T3 Implement JSON import/export
+- M2.T4 Implement YAML import/export
+- M2.T5 Implement parent slot inheritance
+- M2.T6 Implement same-key child override
+- M2.T7 Implement deterministic condition evaluator
+- M2.T8 Implement priority-based conflict resolution
+- M2.T9 Implement prompt renderer
+- M2.T10 Implement span metadata generation
+- M2.T11 Implement missing-slot validator
+- M2.T12 Implement semantic conflict validator
+- M2.T13 Implement over-generation validator
+- M2.T14 Implement ambiguity validator
+- M2.T15 Implement rendered-vs-source fidelity validator
+- M2.T16 Add resolver, renderer, and validator unit tests
+- M2.T17 Add one end-to-end engine scenario fixture
 
 In Progress:
 - None

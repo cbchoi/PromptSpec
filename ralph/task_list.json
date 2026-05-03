@@ -172,7 +172,180 @@
         ".venv/bin/python -m pytest tests/unit"
       ],
       "dependencies": ["M1.T2", "M1.T3", "M1.T4", "M1.T5", "M1.T6", "M1.T7", "M1.T8", "M1.T9"]
+    },
+    {
+      "id": "M2.T1",
+      "title": "Create engine module structure",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F2.1", "F2.2", "F2.3", "F2.4", "F3.1", "F5.1"],
+      "acceptance_criteria": [
+        "Engine package exposes registry, serialization, resolver, renderer, condition, and validator APIs"
+      ],
+      "test_commands": [".venv/bin/python -m pytest tests/unit tests/scenario"],
+      "dependencies": ["M1.T10"]
+    },
+    {
+      "id": "M2.T2",
+      "title": "Implement slot registry CRUD logic",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F1.1"],
+      "acceptance_criteria": [
+        "SlotRegistry supports add, get, update, delete, and list operations"
+      ],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_registry.py"],
+      "dependencies": ["M2.T1"]
+    },
+    {
+      "id": "M2.T3",
+      "title": "Implement JSON import/export",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F1.3"],
+      "acceptance_criteria": ["Slots round-trip through canonical JSON payloads"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_serialization.py"],
+      "dependencies": ["M2.T1"]
+    },
+    {
+      "id": "M2.T4",
+      "title": "Implement YAML import/export",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F1.3"],
+      "acceptance_criteria": ["Slots round-trip through canonical YAML payloads"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_serialization.py"],
+      "dependencies": ["M2.T1"]
+    },
+    {
+      "id": "M2.T5",
+      "title": "Implement parent slot inheritance",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F2.1"],
+      "acceptance_criteria": ["Child PromptSpec resolution includes active parent slots"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_resolver.py"],
+      "dependencies": ["M2.T1"]
+    },
+    {
+      "id": "M2.T6",
+      "title": "Implement same-key child override",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F2.2"],
+      "acceptance_criteria": ["Child slots override inherited parent slots with the same key"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_resolver.py"],
+      "dependencies": ["M2.T5"]
+    },
+    {
+      "id": "M2.T7",
+      "title": "Implement deterministic condition evaluator",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F2.3"],
+      "acceptance_criteria": ["Conditions support truthy flags, negation, equality, and inequality"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_conditions.py"],
+      "dependencies": ["M2.T1"]
+    },
+    {
+      "id": "M2.T8",
+      "title": "Implement priority-based conflict resolution",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F2.4"],
+      "acceptance_criteria": ["Resolver chooses higher-priority slots when same-key slots appear at the same level"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_resolver.py"],
+      "dependencies": ["M2.T1"]
+    },
+    {
+      "id": "M2.T9",
+      "title": "Implement prompt renderer",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F3.1"],
+      "acceptance_criteria": ["Renderer converts PromptSpec slot values into rendered prompt text"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_renderer_validator.py"],
+      "dependencies": ["M2.T1"]
+    },
+    {
+      "id": "M2.T10",
+      "title": "Implement span metadata generation",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F3.2"],
+      "acceptance_criteria": ["Renderer emits exact source spans for each rendered slot"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_renderer_validator.py"],
+      "dependencies": ["M2.T9"]
+    },
+    {
+      "id": "M2.T11",
+      "title": "Implement missing-slot validator",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F5.1"],
+      "acceptance_criteria": ["Validator fails when required slots are missing from rendered spans"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_renderer_validator.py"],
+      "dependencies": ["M2.T10"]
+    },
+    {
+      "id": "M2.T12",
+      "title": "Implement semantic conflict validator",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F5.2"],
+      "acceptance_criteria": ["Validator reports declared active slot conflicts"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_renderer_validator.py"],
+      "dependencies": ["M2.T11"]
+    },
+    {
+      "id": "M2.T13",
+      "title": "Implement over-generation validator",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F5.3"],
+      "acceptance_criteria": ["Validator fails when rendered prompt adds unsupported text"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_renderer_validator.py"],
+      "dependencies": ["M2.T11"]
+    },
+    {
+      "id": "M2.T14",
+      "title": "Implement ambiguity validator",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F5.4"],
+      "acceptance_criteria": ["Validator reports ambiguous wording as a warning"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_renderer_validator.py"],
+      "dependencies": ["M2.T11"]
+    },
+    {
+      "id": "M2.T15",
+      "title": "Implement rendered-vs-source fidelity validator",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F5.5"],
+      "acceptance_criteria": ["Validator fails when span text differs from source slot value"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit/test_engine_renderer_validator.py"],
+      "dependencies": ["M2.T11"]
+    },
+    {
+      "id": "M2.T16",
+      "title": "Add resolver, renderer, and validator unit tests",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F2.1", "F2.2", "F2.3", "F2.4", "F3.1", "F3.2", "F5.1", "F5.2", "F5.3", "F5.4", "F5.5"],
+      "acceptance_criteria": ["Unit tests cover resolver, renderer, and validator behavior"],
+      "test_commands": [".venv/bin/python -m pytest tests/unit"],
+      "dependencies": ["M2.T15"]
+    },
+    {
+      "id": "M2.T17",
+      "title": "Add one end-to-end engine scenario fixture",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F2.1", "F3.1", "F5.1"],
+      "acceptance_criteria": ["Scenario test resolves, renders, and validates a PromptSpec end to end"],
+      "test_commands": [".venv/bin/python -m pytest tests/scenario/test_engine_scenario.py"],
+      "dependencies": ["M2.T16"]
     }
   ]
 }
-

@@ -16,3 +16,4 @@ No implementation task has passed acceptance yet.
 | M1.T8 | pass | `.venv/bin/python -m pytest tests/unit/test_ralph_task.py`; included in full unit suite | M1 tag |
 | M1.T9 | pass | `.venv/bin/python -m pytest tests/unit/test_schema_export.py`; included in full unit suite | M1 tag |
 | M1.T10 | pass | `.venv/bin/python -m pytest tests/unit` passed 34 tests | M1 tag |
+| M2.T1-M2.T17 | pass | `.venv/bin/python -m pytest tests/unit tests/scenario` passed 56 tests; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M2 tag |
