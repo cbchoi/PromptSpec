@@ -18,3 +18,4 @@ No implementation task has passed acceptance yet.
 | M1.T10 | pass | `.venv/bin/python -m pytest tests/unit` passed 34 tests | M1 tag |
 | M2.T1-M2.T17 | pass | `.venv/bin/python -m pytest tests/unit tests/scenario` passed 56 tests; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M2 tag |
 | M3.T1-M3.T13 | pass | `.venv/bin/python -m pytest tests/unit tests/scenario` passed 61 tests; `.venv/bin/python harness.py run --suite scenario --reports-dir /tmp/promptspec-reports`; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M3 tag |
+| M4.T1-M4.T15 | pass | `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration` passed 66 tests; `.venv/bin/ruff check .`; `.venv/bin/mypy` | M4 tag |

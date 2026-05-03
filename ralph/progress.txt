@@ -39,6 +39,21 @@ Completed:
 - M3.T11 Add python harness.py report CLI
 - M3.T12 Add failing-test report behavior
 - M3.T13 Add harness tests with pass and fail fixtures
+- M4.T1 Create FastAPI service structure
+- M4.T2 Add app configuration model
+- M4.T3 Add SQLite persistence setup
+- M4.T4 Implement /api/prompts/resolve
+- M4.T5 Implement /api/prompts/render
+- M4.T6 Implement /api/prompts/inspect
+- M4.T7 Implement /api/prompts/validate
+- M4.T8 Implement /api/tests/run
+- M4.T9 Implement /api/tests/report/{report_id}
+- M4.T10 Implement /api/settings GET
+- M4.T11 Implement /api/settings PUT
+- M4.T12 Implement /api/ralph/status
+- M4.T13 Implement /api/ralph/check
+- M4.T14 Add shared error response handling
+- M4.T15 Add API integration tests with httpx
 
 In Progress:
 - None

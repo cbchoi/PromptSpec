@@ -37,3 +37,18 @@
   - `.venv/bin/python harness.py run --suite scenario --reports-dir /tmp/promptspec-reports`
   - `.venv/bin/ruff check .`
   - `.venv/bin/mypy`
+
+## M4 FastAPI Backend
+
+- Implemented FastAPI app factory and service package.
+- Added SQLite-backed settings repository.
+- Implemented prompt resolve, render, inspect, and validate endpoints.
+- Implemented test run and test report endpoints.
+- Implemented settings GET/PUT endpoints.
+- Implemented Ralph status and check endpoints.
+- Added shared API error response helpers.
+- Added httpx integration tests.
+- Verification passed:
+  - `.venv/bin/python -m pytest tests/unit tests/scenario tests/integration`
+  - `.venv/bin/ruff check .`
+  - `.venv/bin/mypy`

@@ -476,6 +476,156 @@
       "acceptance_criteria": ["Harness unit tests cover pass and failure-report behavior"],
       "test_commands": [".venv/bin/python -m pytest tests/unit tests/scenario"],
       "dependencies": ["M3.T12"]
+    },
+    {
+      "id": "M4.T1",
+      "title": "Create FastAPI service structure",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F8.2"],
+      "acceptance_criteria": ["FastAPI app factory exists under services/api"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M3.T13"]
+    },
+    {
+      "id": "M4.T2",
+      "title": "Add app configuration model",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F8.3"],
+      "acceptance_criteria": ["AppSettings exposes local LLM endpoint and storage path"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T1"]
+    },
+    {
+      "id": "M4.T3",
+      "title": "Add SQLite persistence setup",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F8.2"],
+      "acceptance_criteria": ["SettingsRepository persists settings through SQLite"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T2"]
+    },
+    {
+      "id": "M4.T4",
+      "title": "Implement /api/prompts/resolve",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F2.1", "F2.2", "F2.3", "F2.4"],
+      "acceptance_criteria": ["Resolve endpoint returns a PromptSpec response"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T1"]
+    },
+    {
+      "id": "M4.T5",
+      "title": "Implement /api/prompts/render",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F3.1", "F3.2"],
+      "acceptance_criteria": ["Render endpoint returns RenderedPrompt text and spans"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T4"]
+    },
+    {
+      "id": "M4.T6",
+      "title": "Implement /api/prompts/inspect",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F4.2"],
+      "acceptance_criteria": ["Inspect endpoint returns a schema-valid MeaningReport"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T1"]
+    },
+    {
+      "id": "M4.T7",
+      "title": "Implement /api/prompts/validate",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F5.1", "F5.2", "F5.3", "F5.4", "F5.5"],
+      "acceptance_criteria": ["Validate endpoint returns a ValidationReport"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T5"]
+    },
+    {
+      "id": "M4.T8",
+      "title": "Implement /api/tests/run",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F6.2", "F6.4"],
+      "acceptance_criteria": ["Tests run endpoint returns a TestReport"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T1"]
+    },
+    {
+      "id": "M4.T9",
+      "title": "Implement /api/tests/report/{report_id}",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F6.4"],
+      "acceptance_criteria": ["Tests report endpoint returns stored TestReport JSON"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T8"]
+    },
+    {
+      "id": "M4.T10",
+      "title": "Implement /api/settings GET",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F8.3"],
+      "acceptance_criteria": ["Settings GET endpoint returns AppSettings"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T3"]
+    },
+    {
+      "id": "M4.T11",
+      "title": "Implement /api/settings PUT",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F8.3"],
+      "acceptance_criteria": ["Settings PUT endpoint persists AppSettings"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T10"]
+    },
+    {
+      "id": "M4.T12",
+      "title": "Implement /api/ralph/status",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F9.3"],
+      "acceptance_criteria": ["Ralph status endpoint returns task and progress data"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T1"]
+    },
+    {
+      "id": "M4.T13",
+      "title": "Implement /api/ralph/check",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F9.2", "F9.5"],
+      "acceptance_criteria": ["Ralph check endpoint validates task acceptance/test contract"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T12"]
+    },
+    {
+      "id": "M4.T14",
+      "title": "Add shared error response handling",
+      "status": "completed",
+      "source_doc": "docs/API_Specification.md",
+      "requirements": ["F8.2"],
+      "acceptance_criteria": ["API has shared JSON error response helpers"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration/test_api.py"],
+      "dependencies": ["M4.T1"]
+    },
+    {
+      "id": "M4.T15",
+      "title": "Add API integration tests with httpx",
+      "status": "completed",
+      "source_doc": "docs/milestones/README.md",
+      "requirements": ["F8.2"],
+      "acceptance_criteria": ["httpx integration tests cover prompt, settings, tests, and Ralph endpoints"],
+      "test_commands": [".venv/bin/python -m pytest tests/integration"],
+      "dependencies": ["M4.T14"]
     }
   ]
 }
