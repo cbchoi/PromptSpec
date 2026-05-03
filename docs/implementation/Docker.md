@@ -15,6 +15,12 @@ for the blocked browser and desktop gates:
 docker build -t promptspec-dev .
 ```
 
+For the Codex workspace image:
+
+```bash
+docker build -f Dockerfile.codex -t promptspec-codex .
+```
+
 ## Run
 
 ```bash
